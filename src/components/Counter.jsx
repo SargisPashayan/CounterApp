@@ -50,6 +50,21 @@ class Counter extends Component {
     });
   };
 
+  componentDidMount() {
+    const stringCount = localStorage.getItem("count");
+    const count = parseInt(stringCount, 10);
+
+    if (!isNaN(count)) {
+      this.setState({ count: count });
+    }
+  }
+
+  componentDidUpdate(prevState) {
+    if (prevState.count !== this.state.count) {
+      localStorage.setItem("count", this.state.count);
+    }
+  }
+
   render() {
     let { count } = this.state;
     let { step } = this.state;
