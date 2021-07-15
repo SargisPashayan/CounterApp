@@ -9,6 +9,8 @@ class Counter extends Component {
     this.state = {
       count: 0,
       step: 1,
+      max: 100,
+      min: 0,
     };
   }
 
@@ -24,25 +26,48 @@ class Counter extends Component {
     });
   };
 
+  reset = () => {
+    this.setState({
+      count: 0,
+    });
+  };
+
   changeStep = (e) => {
     this.setState({
       step: parseInt(e.target.value, 10) || 0,
     });
   };
 
+  maxStep = (e) => {
+    this.setState({
+      max: parseInt(e.target.value, 10) || 0,
+    });
+  };
+
+  minStep = (e) => {
+    this.setState({
+      min: parseInt(e.target.value, 10) || 0,
+    });
+  };
+
   render() {
     let { count } = this.state;
     let { step } = this.state;
+    let { max } = this.state;
+    let { min } = this.state;
+
     return (
       <div className="counter">
         <h1>Count: {count}</h1>
-        <Button sign="+" operation={this.incrementCount} />      {/* () => this.incremntCount */}
-        <Button
-          count={count}
-          sign="-"
-          operation={this.decrementCount}
-        />
-        <InputStep step={step} changeStep={this.changeStep} />
+        <Button toggle={count + step > max} sign="+" operation={this.incrementCount} />      {/* () => this.incremntCount */}
+        <Button toggle={count - step < min} sign="-" operation={this.decrementCount} />
+        <Button toggle={count - step < min} sign="Reset" operation={this.reset} />
+        <InputStep value={step} changeValue={this.changeStep} />
+        <InputStep  value={max} changeValue={this.maxStep} />;
+        <InputStep value={min} changeValue={this.minStep} />;
+
+        {/* <input type="number" value={max} onChange={this.maxStep}></input>;
+        <input type="number" value={min} onChange={this.minStep}></input>; */}
       </div>
     );
   }
